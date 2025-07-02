@@ -187,6 +187,7 @@ export const useLeadsData = () => {
     {
       key: 'contact',
       label: 'Contact',
+      sortable: true,
       className: 'min-w-[150px]'
     }
   ], []);
@@ -312,6 +313,11 @@ export const useLeadsData = () => {
     setSearchQuery('');
   };
 
+  // Function to handle column header sorting
+  const handleColumnSort = (field: string, direction: 'asc' | 'desc') => {
+    setSortBy(`${field}-${direction}`);
+  };
+
   return {
     leadsData,
     columns,
@@ -324,6 +330,7 @@ export const useLeadsData = () => {
     handleSortChange,
     clearSort,
     handleSearchChange,
-    clearSearch
+    clearSearch,
+    handleColumnSort
   };
 };

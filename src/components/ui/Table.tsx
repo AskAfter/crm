@@ -12,37 +12,44 @@ interface TableColumn {
 interface TableProps {
   data: any[];
   columns: TableColumn[];
+  currentSort?: string;
+  onSort?: (field: string, direction: 'asc' | 'desc') => void;
   className?: string;
   [key: string]: any;
 }
 
-const Table: React.FC<TableProps> = ({ data = [], columns = [], className = '', ...props }) => {
-  const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'asc' | 'desc' }>({ key: null, direction: 'asc' });
-
-  const handleSort = (key: string) => {
-    let direction: 'asc' | 'desc' = 'asc';
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
-    }
-    setSortConfig({ key, direction });
+const Table: React.FC<TableProps> = ({ 
+  data = [], 
+  columns = [], 
+  currentSort,
+  onSort,
+  className = '', 
+  ...props 
+}) => {
+  // Parse current sort to get field and direction
+  const getCurrentSortInfo = () => {
+    if (!currentSort) return { field: null, direction: 'asc' as const };
+    const [field, direction] = currentSort.split('-');
+    return { field, direction: direction as 'asc' | 'desc' };
   };
 
-  const sortedData = React.useMemo(() => {
-    if (!sortConfig.key) return data;
+  const { field: currentField, direction: currentDirection } = getCurrentSortInfo();
 
-    return [...data].sort((a, b) => {
-      const aValue = a[sortConfig.key!];
-      const bValue = b[sortConfig.key!];
+  const handleSort = (key: string) => {
+    if (!onSort) return;
+    
+    // Determine new direction
+    let newDirection: 'asc' | 'desc' = 'asc';
+    if (currentField === key && currentDirection === 'asc') {
+      newDirection = 'desc';
+    }
+    
+    // Call external sort handler
+    onSort(key, newDirection);
+  };
 
-      if (aValue < bValue) {
-        return sortConfig.direction === 'asc' ? -1 : 1;
-      }
-      if (aValue > bValue) {
-        return sortConfig.direction === 'asc' ? 1 : -1;
-      }
-      return 0;
-    });
-  }, [data, sortConfig]);
+  // Use the data as-is since sorting is handled externally
+  const displayData = data;
 
   const getStatusBadgeClass = (status: string): string => {
     const statusClasses: Record<string, string> = {
@@ -88,9 +95,9 @@ const Table: React.FC<TableProps> = ({ data = [], columns = [], className = '', 
               >
                 <div className="flex items-center gap-1">
                   {column.label}
-                  {column.sortable && sortConfig.key === column.key && (
+                  {column.sortable && currentField === column.key && (
                     <span className="text-blue-500">
-                      {sortConfig.direction === 'asc' ? '↑' : '↓'}
+                      {currentDirection === 'asc' ? '↑' : '↓'}
                     </span>
                   )}
                 </div>
@@ -99,7 +106,7 @@ const Table: React.FC<TableProps> = ({ data = [], columns = [], className = '', 
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {sortedData.map((row, rowIndex) => (
+          {displayData.map((row, rowIndex) => (
             <tr 
               key={rowIndex}
               className="hover:bg-gray-50 transition-colors duration-150"

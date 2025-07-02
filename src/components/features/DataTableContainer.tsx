@@ -27,6 +27,7 @@ interface DataTableContainerProps {
   onSortChange?: (value: string) => void;
   onViewChange?: (value: string) => void;
   onClearSort?: () => void;
+  onColumnSort?: (field: string, direction: 'asc' | 'desc') => void;
   title?: string;
   className?: string;
 }
@@ -42,6 +43,7 @@ const DataTableContainer: React.FC<DataTableContainerProps> = ({
   onSortChange,
   onViewChange,
   onClearSort,
+  onColumnSort,
   title,
   className = ''
 }) => {
@@ -70,6 +72,8 @@ const DataTableContainer: React.FC<DataTableContainerProps> = ({
         <Table 
           data={data} 
           columns={columns}
+          currentSort={currentSort}
+          onSort={onColumnSort}
           className="bg-white rounded-lg overflow-hidden shadow-sm"
         />
       </div>

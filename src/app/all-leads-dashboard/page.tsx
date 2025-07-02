@@ -24,7 +24,8 @@ const AllLeadsDashboard: React.FC = () => {
     handleSortChange, 
     clearSort,
     handleSearchChange,
-    clearSearch
+    clearSearch,
+    handleColumnSort
   } = useLeadsData();
   
   const handleViewChange = (value: string) => {
@@ -71,6 +72,7 @@ const AllLeadsDashboard: React.FC = () => {
             onSortChange={handleSortChange}
             onViewChange={handleViewChange}
             onClearSort={clearSort}
+            onColumnSort={handleColumnSort}
             className="mb-6"
           />
           
