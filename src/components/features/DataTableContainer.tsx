@@ -21,8 +21,10 @@ interface DataTableContainerProps {
   columns: TableColumn[];
   sortOptions?: DropdownOption[];
   viewOptions?: DropdownOption[];
+  currentSort?: string;
   onSortChange?: (value: string) => void;
   onViewChange?: (value: string) => void;
+  onClearSort?: () => void;
   title?: string;
   className?: string;
 }
@@ -32,8 +34,10 @@ const DataTableContainer: React.FC<DataTableContainerProps> = ({
   columns,
   sortOptions,
   viewOptions,
+  currentSort,
   onSortChange,
   onViewChange,
+  onClearSort,
   title,
   className = ''
 }) => {
@@ -48,8 +52,11 @@ const DataTableContainer: React.FC<DataTableContainerProps> = ({
         <FilterControls
           sortOptions={sortOptions}
           viewOptions={viewOptions}
+          currentSort={currentSort}
+          itemCount={data.length}
           onSortChange={onSortChange}
           onViewChange={onViewChange}
+          onClearSort={onClearSort}
           className="mb-6"
         />
 

@@ -10,16 +10,22 @@ interface DropdownOption {
 interface FilterControlsProps {
   sortOptions?: DropdownOption[];
   viewOptions?: DropdownOption[];
+  currentSort?: string;
+  itemCount?: number;
   onSortChange?: (value: string) => void;
   onViewChange?: (value: string) => void;
+  onClearSort?: () => void;
   className?: string;
 }
 
 const FilterControls: React.FC<FilterControlsProps> = ({
   sortOptions = [{ value: 'sort', label: 'Sort' }],
   viewOptions = [{ value: 'view', label: 'View' }],
+  currentSort,
+  itemCount,
   onSortChange,
   onViewChange,
+  onClearSort,
   className = ''
 }) => {
   return (
@@ -43,9 +49,30 @@ const FilterControls: React.FC<FilterControlsProps> = ({
 
       {/* Sort and View Controls */}
       <div className="flex items-center gap-2 sm:gap-4">
+        {/* Current Sort Display */}
+        {currentSort && (
+          <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
+            <span className="text-xs text-blue-700 font-medium">
+              Sorted: {sortOptions.find(opt => opt.value === currentSort)?.label || currentSort}
+            </span>
+            {onClearSort && (
+              <button
+                onClick={onClearSort}
+                className="text-blue-600 hover:text-blue-800 transition-colors"
+                title="Clear sort"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+        )}
+        
         <Dropdown
           placeholder="Sort"
           options={sortOptions}
+          value={currentSort}
           onChange={onSortChange}
           className="text-xs sm:text-sm"
           leftImage={{

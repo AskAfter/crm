@@ -12,12 +12,15 @@ const AllLeadsDashboard: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   
   // Use the custom hook for data and configuration
-  const { leadsData, columns, sortOptions, viewOptions } = useLeadsData();
-  
-  const handleSortChange = (value: string) => {
-    console.log('Sort changed to:', value);
-    // TODO: Implement sorting logic
-  };
+  const { 
+    leadsData, 
+    columns, 
+    sortOptions, 
+    viewOptions, 
+    currentSort, 
+    handleSortChange, 
+    clearSort 
+  } = useLeadsData();
   
   const handleViewChange = (value: string) => {
     console.log('View changed to:', value);
@@ -51,8 +54,10 @@ const AllLeadsDashboard: React.FC = () => {
             columns={columns}
             sortOptions={sortOptions}
             viewOptions={viewOptions}
+            currentSort={currentSort}
             onSortChange={handleSortChange}
             onViewChange={handleViewChange}
+            onClearSort={clearSort}
             className="mb-6"
           />
           

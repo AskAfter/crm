@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useState, useMemo } from 'react';
 
 export interface Lead {
   id: number;
@@ -26,8 +26,11 @@ export interface DropdownOption {
 }
 
 export const useLeadsData = () => {
+  // Sorting state
+  const [sortBy, setSortBy] = useState<string>('');
+  
   // Sample lead data
-  const leadsData: Lead[] = useMemo(() => [
+  const rawLeadsData: Lead[] = useMemo(() => [
     {
       id: 1,
       name: 'Alex Rivera',
@@ -202,10 +205,81 @@ export const useLeadsData = () => {
     { value: 'financial', label: 'Financial Info' }
   ], []);
 
+  // Revenue mapping for sorting (higher values = higher revenue)
+  const revenueOrder: Record<string, number> = {
+    '$100M-$100B': 6,
+    '$1B-$10B': 5,
+    '$500M <': 4,
+    '$250-$500M': 3,
+    '$10-$50M': 2,
+    '$1-$10M': 1,
+    'Unknown': 0
+  };
+
+  // Status order for sorting
+  const statusOrder: Record<string, number> = {
+    'Active': 4,
+    'On Hold': 3,
+    'Not Started': 2,
+    'Closed': 1
+  };
+
+  // Sorted data based on current sort selection
+  const leadsData = useMemo(() => {
+    if (!sortBy) return rawLeadsData;
+
+    const [field, direction] = sortBy.split('-');
+    const isAsc = direction === 'asc';
+
+    return [...rawLeadsData].sort((a, b) => {
+      let aValue: any = a[field as keyof Lead];
+      let bValue: any = b[field as keyof Lead];
+
+      // Special handling for revenue sorting
+      if (field === 'revenue') {
+        aValue = revenueOrder[aValue] || 0;
+        bValue = revenueOrder[bValue] || 0;
+      }
+      
+      // Special handling for status sorting
+      if (field === 'status') {
+        aValue = statusOrder[aValue] || 0;
+        bValue = statusOrder[bValue] || 0;
+      }
+
+      // String comparison for names and other text fields
+      if (typeof aValue === 'string' && field !== 'revenue' && field !== 'status') {
+        aValue = aValue.toLowerCase();
+        bValue = bValue.toLowerCase();
+      }
+
+      if (aValue < bValue) {
+        return isAsc ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return isAsc ? 1 : -1;
+      }
+      return 0;
+    });
+  }, [rawLeadsData, sortBy]);
+
+  // Function to handle sort changes
+  const handleSortChange = (value: string) => {
+    setSortBy(value);
+  };
+
+  // Function to clear sorting
+  const clearSort = () => {
+    setSortBy('');
+  };
+
   return {
     leadsData,
     columns,
     sortOptions,
-    viewOptions
+    viewOptions,
+    currentSort: sortBy,
+    handleSortChange,
+    clearSort
   };
 };
