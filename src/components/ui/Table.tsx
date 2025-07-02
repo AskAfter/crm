@@ -1,11 +1,26 @@
 'use client';
 import React, { useState, useMemo } from 'react';
 
-const Table = ({ data = [], columns = [], className = '', ...props }) => {
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+interface TableColumn {
+  key: string;
+  label: string;
+  sortable?: boolean;
+  className?: string;
+  render?: (value: any, row: any, index: number) => React.ReactNode;
+}
 
-  const handleSort = (key) => {
-    let direction = 'asc';
+interface TableProps {
+  data: any[];
+  columns: TableColumn[];
+  className?: string;
+  [key: string]: any;
+}
+
+const Table: React.FC<TableProps> = ({ data = [], columns = [], className = '', ...props }) => {
+  const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'asc' | 'desc' }>({ key: null, direction: 'asc' });
+
+  const handleSort = (key: string) => {
+    let direction: 'asc' | 'desc' = 'asc';
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
       direction = 'desc';
     }
@@ -16,8 +31,8 @@ const Table = ({ data = [], columns = [], className = '', ...props }) => {
     if (!sortConfig.key) return data;
 
     return [...data].sort((a, b) => {
-      const aValue = a[sortConfig.key];
-      const bValue = b[sortConfig.key];
+      const aValue = a[sortConfig.key!];
+      const bValue = b[sortConfig.key!];
 
       if (aValue < bValue) {
         return sortConfig.direction === 'asc' ? -1 : 1;
@@ -29,8 +44,8 @@ const Table = ({ data = [], columns = [], className = '', ...props }) => {
     });
   }, [data, sortConfig]);
 
-  const getStatusBadgeClass = (status) => {
-    const statusClasses = {
+  const getStatusBadgeClass = (status: string): string => {
+    const statusClasses: Record<string, string> = {
       'Closed': 'bg-table-2 text-global-4',
       'On Hold': 'bg-table-4 text-global-4',
       'Active': 'bg-global-3 text-global-4',
@@ -39,8 +54,8 @@ const Table = ({ data = [], columns = [], className = '', ...props }) => {
     return statusClasses[status] || 'bg-gray-100 text-gray-800';
   };
 
-  const getRevenueBadgeClass = (revenue) => {
-    const revenueClasses = {
+  const getRevenueBadgeClass = (revenue: string): string => {
+    const revenueClasses: Record<string, string> = {
       '$100M-$100B': 'bg-global-3 text-global-1',
       '$1B-$10B': 'bg-table-2 text-global-1',
       '$500M <': 'bg-table-1 text-global-1',

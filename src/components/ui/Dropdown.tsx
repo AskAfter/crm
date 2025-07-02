@@ -1,7 +1,30 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 
-const Dropdown = ({
+interface DropdownOption {
+  value: string;
+  label: string;
+}
+
+interface ImageProps {
+  src: string;
+  width?: number;
+  height?: number;
+}
+
+interface DropdownProps {
+  placeholder?: string;
+  options?: DropdownOption[];
+  value?: string;
+  onChange?: (value: string) => void;
+  disabled?: boolean;
+  className?: string;
+  leftImage?: ImageProps;
+  rightImage?: ImageProps;
+  [key: string]: any;
+}
+
+const Dropdown: React.FC<DropdownProps> = ({
   placeholder = 'Select option',
   options = [],
   value,
@@ -12,13 +35,13 @@ const Dropdown = ({
   rightImage,
   ...props
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(value || '');
-  const dropdownRef = useRef(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedValue, setSelectedValue] = useState<string>(value || '');
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -29,7 +52,7 @@ const Dropdown = ({
     };
   }, []);
 
-  const handleSelect = (option) => {
+  const handleSelect = (option: DropdownOption) => {
     setSelectedValue(option.value);
     setIsOpen(false);
     if (onChange) {
