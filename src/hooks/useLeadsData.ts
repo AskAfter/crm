@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 export interface Lead {
   id: number;
@@ -26,10 +26,12 @@ export interface DropdownOption {
 }
 
 export const useLeadsData = () => {
-  // Sorting, search, and filtering state
+  // Sorting, search, filtering, and view state
   const [sortBy, setSortBy] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('');
+  const [currentView, setCurrentView] = useState<string>('table');
+  const [leadsDataState, setLeadsDataState] = useState<Lead[]>([]);
   
   // Sample lead data
   const rawLeadsData: Lead[] = useMemo(() => [
@@ -145,6 +147,11 @@ export const useLeadsData = () => {
     }
   ], []);
 
+  // Initialize leads state on mount
+  useEffect(() => {
+    setLeadsDataState(rawLeadsData);
+  }, [rawLeadsData]);
+
   // Table columns configuration
   const columns: TableColumn[] = useMemo(() => [
     {
@@ -203,10 +210,8 @@ export const useLeadsData = () => {
   ], []);
 
   const viewOptions: DropdownOption[] = useMemo(() => [
-    { value: 'all', label: 'All Columns' },
-    { value: 'basic', label: 'Basic Info' },
-    { value: 'contact', label: 'Contact Details' },
-    { value: 'financial', label: 'Financial Info' }
+    { value: 'table', label: 'CRM View' },
+    { value: 'kanban', label: 'Kanban View' }
   ], []);
 
   // Revenue mapping for sorting (higher values = higher revenue)
@@ -255,7 +260,7 @@ export const useLeadsData = () => {
   // Filter, search, and sort data based on all criteria
   const leadsData = useMemo(() => {
     // First apply search filter
-    let filteredData = searchLeads(rawLeadsData, searchQuery);
+    let filteredData = searchLeads(leadsDataState, searchQuery);
     
     // Then apply status filter
     if (statusFilter) {
@@ -298,7 +303,7 @@ export const useLeadsData = () => {
       }
       return 0;
     });
-  }, [rawLeadsData, searchQuery, statusFilter, sortBy]);
+  }, [leadsDataState, searchQuery, statusFilter, sortBy]);
 
   // Function to handle sort changes
   const handleSortChange = (value: string) => {
@@ -335,6 +340,23 @@ export const useLeadsData = () => {
     setStatusFilter('');
   };
 
+  // Function to handle view changes
+  const handleViewChange = (value: string) => {
+    setCurrentView(value);
+  };
+
+  // Function to handle status updates (for drag and drop)
+  const handleStatusUpdate = (leadId: number, newStatus: string) => {
+    setLeadsDataState(prevLeads => 
+      prevLeads.map(lead => 
+        lead.id === leadId 
+          ? { ...lead, status: newStatus }
+          : lead
+      )
+    );
+    console.log(`Lead ${leadId} status updated to: ${newStatus}`);
+  };
+
   return {
     leadsData,
     columns,
@@ -343,6 +365,7 @@ export const useLeadsData = () => {
     currentSort: sortBy,
     searchQuery,
     statusFilter,
+    currentView,
     totalLeads: rawLeadsData.length,
     filteredCount: leadsData.length,
     handleSortChange,
@@ -351,6 +374,8 @@ export const useLeadsData = () => {
     clearSearch,
     handleColumnSort,
     handleStatusFilterChange,
-    clearStatusFilter
+    clearStatusFilter,
+    handleViewChange,
+    handleStatusUpdate
   };
 };

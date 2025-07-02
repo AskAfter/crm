@@ -20,6 +20,7 @@ const AllLeadsDashboard: React.FC = () => {
     currentSort,
     searchQuery,
     statusFilter,
+    currentView,
     totalLeads,
     filteredCount,
     handleSortChange, 
@@ -28,13 +29,10 @@ const AllLeadsDashboard: React.FC = () => {
     clearSearch,
     handleColumnSort,
     handleStatusFilterChange,
-    clearStatusFilter
+    clearStatusFilter,
+    handleViewChange,
+    handleStatusUpdate
   } = useLeadsData();
-  
-  const handleViewChange = (value: string) => {
-    console.log('View changed to:', value);
-    // TODO: Implement view filtering logic
-  };
   
   const handlePageChange = (page: number) => {
     console.log('Page changed to:', page);
@@ -72,11 +70,13 @@ const AllLeadsDashboard: React.FC = () => {
             currentSort={currentSort}
             searchQuery={searchQuery}
             statusFilter={statusFilter}
+            currentView={currentView}
             totalCount={totalLeads}
             onStatusFilterChange={handleStatusFilterChange}
             onViewChange={handleViewChange}
             onClearSort={clearSort}
             onColumnSort={handleColumnSort}
+            onStatusChange={handleStatusUpdate}
             className="mb-6"
           />
           

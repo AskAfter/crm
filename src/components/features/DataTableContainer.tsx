@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Table from '../ui/Table';
+import KanbanBoard from '../ui/KanbanBoard';
 import FilterControls from './FilterControls';
 
 interface DropdownOption {
@@ -24,11 +25,13 @@ interface DataTableContainerProps {
   currentSort?: string;
   searchQuery?: string;
   statusFilter?: string;
+  currentView?: string;
   totalCount?: number;
   onStatusFilterChange?: (value: string) => void;
   onViewChange?: (value: string) => void;
   onClearSort?: () => void;
   onColumnSort?: (field: string, direction: 'asc' | 'desc') => void;
+  onStatusChange?: (leadId: number, newStatus: string) => void;
   title?: string;
   className?: string;
 }
@@ -41,11 +44,13 @@ const DataTableContainer: React.FC<DataTableContainerProps> = ({
   currentSort,
   searchQuery,
   statusFilter,
+  currentView = 'table',
   totalCount,
   onStatusFilterChange,
   onViewChange,
   onClearSort,
   onColumnSort,
+  onStatusChange,
   title,
   className = ''
 }) => {
@@ -71,14 +76,22 @@ const DataTableContainer: React.FC<DataTableContainerProps> = ({
           className="mb-6"
         />
 
-        {/* Data Table */}
-        <Table 
-          data={data} 
-          columns={columns}
-          currentSort={currentSort}
-          onSort={onColumnSort}
-          className="bg-white rounded-lg overflow-hidden shadow-sm"
-        />
+        {/* Data View */}
+        {currentView === 'kanban' ? (
+          <KanbanBoard 
+            data={data}
+            onStatusChange={onStatusChange}
+            className=""
+          />
+        ) : (
+          <Table 
+            data={data} 
+            columns={columns}
+            currentSort={currentSort}
+            onSort={onColumnSort}
+            className="bg-white rounded-lg overflow-hidden shadow-sm"
+          />
+        )}
       </div>
     </div>
   );
