@@ -63,14 +63,13 @@ const Dropdown: React.FC<DropdownProps> = ({
   const selectedOption = options.find(opt => opt.value === selectedValue);
 
   return (
-    <div className="relative w-full" ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef}>
       <button
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
         className={`
-          w-full
-          flex
+          inline-flex
           items-center
           justify-between
           px-3 py-2 sm:px-4 sm:py-3
@@ -86,6 +85,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           focus:border-blue-500
           transition-all
           duration-200
+          min-w-[100px]
           ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-gray-400'}
           ${className}
         `.trim().replace(/\s+/g, ' ')}
@@ -103,7 +103,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               height={leftImage.height}
             />
           )}
-          <span className={selectedValue ? 'text-gray-900' : 'text-gray-500'}>
+          <span className={`whitespace-nowrap ${selectedValue ? 'text-gray-900' : 'text-gray-500'}`}>
             {selectedOption ? selectedOption.label : placeholder}
           </span>
         </div>
@@ -120,7 +120,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-[8px] shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-50 w-full min-w-[150px] mt-1 bg-white border border-gray-300 rounded-[8px] shadow-lg max-h-60 overflow-auto">
           {options.length === 0 ? (
             <div className="px-3 py-2 sm:px-4 sm:py-3 text-sm text-gray-500">
               No options available

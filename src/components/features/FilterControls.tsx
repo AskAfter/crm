@@ -8,26 +8,28 @@ interface DropdownOption {
 }
 
 interface FilterControlsProps {
-  sortOptions?: DropdownOption[];
+  statusFilterOptions?: DropdownOption[];
   viewOptions?: DropdownOption[];
   currentSort?: string;
   searchQuery?: string;
+  statusFilter?: string;
   itemCount?: number;
   totalCount?: number;
-  onSortChange?: (value: string) => void;
+  onStatusFilterChange?: (value: string) => void;
   onViewChange?: (value: string) => void;
   onClearSort?: () => void;
   className?: string;
 }
 
 const FilterControls: React.FC<FilterControlsProps> = ({
-  sortOptions = [{ value: 'sort', label: 'Sort' }],
+  statusFilterOptions = [{ value: '', label: 'All Status' }],
   viewOptions = [{ value: 'view', label: 'View' }],
   currentSort,
   searchQuery,
+  statusFilter,
   itemCount,
   totalCount,
-  onSortChange,
+  onStatusFilterChange,
   onViewChange,
   onClearSort,
   className = ''
@@ -68,8 +70,12 @@ const FilterControls: React.FC<FilterControlsProps> = ({
         {/* Current Sort Display */}
         {currentSort && (
           <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
+            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z" />
+            </svg>
             <span className="text-xs text-blue-700 font-medium">
-              Sorted: {sortOptions.find(opt => opt.value === currentSort)?.label || currentSort}
+              Sorted by column header
             </span>
             {onClearSort && (
               <button
@@ -85,23 +91,25 @@ const FilterControls: React.FC<FilterControlsProps> = ({
           </div>
         )}
         
-        <Dropdown
-          placeholder="Sort"
-          options={sortOptions}
-          value={currentSort}
-          onChange={onSortChange}
-          className="text-xs sm:text-sm"
-          leftImage={{
-            src: '/images/img_sortalt_1_1.svg',
-            width: 16,
-            height: 14
-          }}
-          rightImage={{
-            src: '/images/img_angle_small_right.svg',
-            width: 12,
-            height: 14
-          }}
-        />
+        <div className="inline-block">
+          <Dropdown
+            placeholder="Filter by Status"
+            options={statusFilterOptions}
+            value={statusFilter}
+            onChange={onStatusFilterChange}
+            className="text-xs sm:text-sm"
+            leftImage={{
+              src: '/images/img_sortalt_1_1.svg',
+              width: 16,
+              height: 14
+            }}
+            rightImage={{
+              src: '/images/img_angle_small_right.svg',
+              width: 12,
+              height: 14
+            }}
+          />
+        </div>
         <Dropdown
           placeholder="View"
           options={viewOptions}

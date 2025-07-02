@@ -26,9 +26,10 @@ export interface DropdownOption {
 }
 
 export const useLeadsData = () => {
-  // Sorting and search state
+  // Sorting, search, and filtering state
   const [sortBy, setSortBy] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [statusFilter, setStatusFilter] = useState<string>('');
   
   // Sample lead data
   const rawLeadsData: Lead[] = useMemo(() => [
@@ -192,12 +193,13 @@ export const useLeadsData = () => {
     }
   ], []);
 
-  // Dropdown options
-  const sortOptions: DropdownOption[] = useMemo(() => [
-    { value: 'name-asc', label: 'Name (A-Z)' },
-    { value: 'name-desc', label: 'Name (Z-A)' },
-    { value: 'status-asc', label: 'Status (A-Z)' },
-    { value: 'revenue-desc', label: 'Revenue (High-Low)' }
+  // Status filter options
+  const statusFilterOptions: DropdownOption[] = useMemo(() => [
+    { value: '', label: 'All Status' },
+    { value: 'Active', label: 'Active' },
+    { value: 'On Hold', label: 'On Hold' },
+    { value: 'Not Started', label: 'Not Started' },
+    { value: 'Closed', label: 'Closed' }
   ], []);
 
   const viewOptions: DropdownOption[] = useMemo(() => [
@@ -250,12 +252,17 @@ export const useLeadsData = () => {
     });
   };
 
-  // Filter and sort data based on search and sort criteria
+  // Filter, search, and sort data based on all criteria
   const leadsData = useMemo(() => {
     // First apply search filter
     let filteredData = searchLeads(rawLeadsData, searchQuery);
     
-    // Then apply sorting if needed
+    // Then apply status filter
+    if (statusFilter) {
+      filteredData = filteredData.filter(lead => lead.status === statusFilter);
+    }
+    
+    // Finally apply sorting if needed
     if (!sortBy) return filteredData;
 
     const [field, direction] = sortBy.split('-');
@@ -291,7 +298,7 @@ export const useLeadsData = () => {
       }
       return 0;
     });
-  }, [rawLeadsData, searchQuery, sortBy]);
+  }, [rawLeadsData, searchQuery, statusFilter, sortBy]);
 
   // Function to handle sort changes
   const handleSortChange = (value: string) => {
@@ -318,19 +325,32 @@ export const useLeadsData = () => {
     setSortBy(`${field}-${direction}`);
   };
 
+  // Function to handle status filter changes
+  const handleStatusFilterChange = (value: string) => {
+    setStatusFilter(value);
+  };
+
+  // Function to clear status filter
+  const clearStatusFilter = () => {
+    setStatusFilter('');
+  };
+
   return {
     leadsData,
     columns,
-    sortOptions,
+    statusFilterOptions,
     viewOptions,
     currentSort: sortBy,
     searchQuery,
+    statusFilter,
     totalLeads: rawLeadsData.length,
     filteredCount: leadsData.length,
     handleSortChange,
     clearSort,
     handleSearchChange,
     clearSearch,
-    handleColumnSort
+    handleColumnSort,
+    handleStatusFilterChange,
+    clearStatusFilter
   };
 };

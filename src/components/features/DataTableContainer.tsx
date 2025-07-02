@@ -19,12 +19,13 @@ interface TableColumn {
 interface DataTableContainerProps {
   data: any[];
   columns: TableColumn[];
-  sortOptions?: DropdownOption[];
+  statusFilterOptions?: DropdownOption[];
   viewOptions?: DropdownOption[];
   currentSort?: string;
   searchQuery?: string;
+  statusFilter?: string;
   totalCount?: number;
-  onSortChange?: (value: string) => void;
+  onStatusFilterChange?: (value: string) => void;
   onViewChange?: (value: string) => void;
   onClearSort?: () => void;
   onColumnSort?: (field: string, direction: 'asc' | 'desc') => void;
@@ -35,12 +36,13 @@ interface DataTableContainerProps {
 const DataTableContainer: React.FC<DataTableContainerProps> = ({
   data,
   columns,
-  sortOptions,
+  statusFilterOptions,
   viewOptions,
   currentSort,
   searchQuery,
+  statusFilter,
   totalCount,
-  onSortChange,
+  onStatusFilterChange,
   onViewChange,
   onClearSort,
   onColumnSort,
@@ -56,13 +58,14 @@ const DataTableContainer: React.FC<DataTableContainerProps> = ({
         
         {/* Filters and Controls */}
         <FilterControls
-          sortOptions={sortOptions}
+          statusFilterOptions={statusFilterOptions}
           viewOptions={viewOptions}
           currentSort={currentSort}
           searchQuery={searchQuery}
+          statusFilter={statusFilter}
           itemCount={data.length}
           totalCount={totalCount}
-          onSortChange={onSortChange}
+          onStatusFilterChange={onStatusFilterChange}
           onViewChange={onViewChange}
           onClearSort={onClearSort}
           className="mb-6"

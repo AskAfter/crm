@@ -15,17 +15,20 @@ const AllLeadsDashboard: React.FC = () => {
   const { 
     leadsData, 
     columns, 
-    sortOptions, 
+    statusFilterOptions, 
     viewOptions, 
     currentSort,
     searchQuery,
+    statusFilter,
     totalLeads,
     filteredCount,
     handleSortChange, 
     clearSort,
     handleSearchChange,
     clearSearch,
-    handleColumnSort
+    handleColumnSort,
+    handleStatusFilterChange,
+    clearStatusFilter
   } = useLeadsData();
   
   const handleViewChange = (value: string) => {
@@ -64,12 +67,13 @@ const AllLeadsDashboard: React.FC = () => {
           <DataTableContainer
             data={leadsData}
             columns={columns}
-            sortOptions={sortOptions}
+            statusFilterOptions={statusFilterOptions}
             viewOptions={viewOptions}
             currentSort={currentSort}
             searchQuery={searchQuery}
+            statusFilter={statusFilter}
             totalCount={totalLeads}
-            onSortChange={handleSortChange}
+            onStatusFilterChange={handleStatusFilterChange}
             onViewChange={handleViewChange}
             onClearSort={clearSort}
             onColumnSort={handleColumnSort}
