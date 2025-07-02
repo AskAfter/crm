@@ -11,7 +11,9 @@ interface FilterControlsProps {
   sortOptions?: DropdownOption[];
   viewOptions?: DropdownOption[];
   currentSort?: string;
+  searchQuery?: string;
   itemCount?: number;
+  totalCount?: number;
   onSortChange?: (value: string) => void;
   onViewChange?: (value: string) => void;
   onClearSort?: () => void;
@@ -22,7 +24,9 @@ const FilterControls: React.FC<FilterControlsProps> = ({
   sortOptions = [{ value: 'sort', label: 'Sort' }],
   viewOptions = [{ value: 'view', label: 'View' }],
   currentSort,
+  searchQuery,
   itemCount,
+  totalCount,
   onSortChange,
   onViewChange,
   onClearSort,
@@ -49,6 +53,18 @@ const FilterControls: React.FC<FilterControlsProps> = ({
 
       {/* Sort and View Controls */}
       <div className="flex items-center gap-2 sm:gap-4">
+        {/* Search Results Indicator */}
+        {searchQuery && itemCount !== undefined && totalCount !== undefined && (
+          <div className="flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-lg">
+            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span className="text-xs text-green-700 font-medium">
+              Found {itemCount} of {totalCount} leads
+            </span>
+          </div>
+        )}
+        
         {/* Current Sort Display */}
         {currentSort && (
           <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">

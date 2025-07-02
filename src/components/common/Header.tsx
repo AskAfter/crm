@@ -1,19 +1,49 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '../ui/Button';
 import Dropdown from '../ui/Dropdown';
 
-const Header = ({ className = '', ...props }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+interface DropdownOption {
+  value: string;
+  label: string;
+}
 
-  const leadOptions = [
+interface HeaderProps {
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
+  onClearSearch?: () => void;
+  searchResultsCount?: number;
+  totalCount?: number;
+  className?: string;
+  [key: string]: any;
+}
+
+const Header: React.FC<HeaderProps> = ({ 
+  searchQuery = '',
+  onSearchChange,
+  onClearSearch,
+  searchResultsCount,
+  totalCount,
+  className = '', 
+  ...props 
+}) => {
+  const leadOptions: DropdownOption[] = [
     { value: 'all-leads', label: 'All Leads' },
     { value: 'active-leads', label: 'Active Leads' },
     { value: 'closed-leads', label: 'Closed Leads' }
   ];
 
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (onSearchChange) {
+      onSearchChange(value);
+    }
+  };
+
+  const handleClearSearch = () => {
+    if (onClearSearch) {
+      onClearSearch();
+    }
   };
 
   const handleAddLead = () => {
@@ -69,12 +99,12 @@ const Header = ({ className = '', ...props }) => {
             </div>
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search leads..."
               value={searchQuery}
               onChange={handleSearch}
-              className="
+              className={`
                 w-full
-                pl-10 pr-12
+                pl-10 ${searchQuery ? 'pr-20' : 'pr-12'}
                 py-2 sm:py-3
                 text-sm sm:text-base
                 text-gray-900
@@ -87,12 +117,36 @@ const Header = ({ className = '', ...props }) => {
                 focus:ring-blue-500
                 focus:border-blue-500
                 transition-all duration-200
-              "
+                ${searchQuery ? 'border-blue-300' : ''}
+              `}
             />
-            <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-              <span className="text-xs sm:text-sm text-header-1 font-medium">
-                ⌘/
-              </span>
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center gap-2">
+              {/* Search Results Indicator */}
+              {searchQuery && searchResultsCount !== undefined && totalCount !== undefined && (
+                <span className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded">
+                  {searchResultsCount}/{totalCount}
+                </span>
+              )}
+              
+              {/* Clear Search Button */}
+              {searchQuery && onClearSearch && (
+                <button
+                  onClick={handleClearSearch}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                  title="Clear search"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+              
+              {/* Keyboard Shortcut - only show when not searching */}
+              {!searchQuery && (
+                <span className="text-xs sm:text-sm text-header-1 font-medium">
+                  ⌘/
+                </span>
+              )}
             </div>
           </div>
 

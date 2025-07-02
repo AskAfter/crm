@@ -17,9 +17,14 @@ const AllLeadsDashboard: React.FC = () => {
     columns, 
     sortOptions, 
     viewOptions, 
-    currentSort, 
+    currentSort,
+    searchQuery,
+    totalLeads,
+    filteredCount,
     handleSortChange, 
-    clearSort 
+    clearSort,
+    handleSearchChange,
+    clearSearch
   } = useLeadsData();
   
   const handleViewChange = (value: string) => {
@@ -44,7 +49,13 @@ const AllLeadsDashboard: React.FC = () => {
         />
         
         {/* Header */}
-        <Header />
+        <Header 
+          searchQuery={searchQuery}
+          onSearchChange={handleSearchChange}
+          onClearSearch={clearSearch}
+          searchResultsCount={filteredCount}
+          totalCount={totalLeads}
+        />
         
         {/* Content Area */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
@@ -55,6 +66,8 @@ const AllLeadsDashboard: React.FC = () => {
             sortOptions={sortOptions}
             viewOptions={viewOptions}
             currentSort={currentSort}
+            searchQuery={searchQuery}
+            totalCount={totalLeads}
             onSortChange={handleSortChange}
             onViewChange={handleViewChange}
             onClearSort={clearSort}

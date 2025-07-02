@@ -22,6 +22,8 @@ interface DataTableContainerProps {
   sortOptions?: DropdownOption[];
   viewOptions?: DropdownOption[];
   currentSort?: string;
+  searchQuery?: string;
+  totalCount?: number;
   onSortChange?: (value: string) => void;
   onViewChange?: (value: string) => void;
   onClearSort?: () => void;
@@ -35,6 +37,8 @@ const DataTableContainer: React.FC<DataTableContainerProps> = ({
   sortOptions,
   viewOptions,
   currentSort,
+  searchQuery,
+  totalCount,
   onSortChange,
   onViewChange,
   onClearSort,
@@ -53,7 +57,9 @@ const DataTableContainer: React.FC<DataTableContainerProps> = ({
           sortOptions={sortOptions}
           viewOptions={viewOptions}
           currentSort={currentSort}
+          searchQuery={searchQuery}
           itemCount={data.length}
+          totalCount={totalCount}
           onSortChange={onSortChange}
           onViewChange={onViewChange}
           onClearSort={onClearSort}

@@ -26,8 +26,9 @@ export interface DropdownOption {
 }
 
 export const useLeadsData = () => {
-  // Sorting state
+  // Sorting and search state
   const [sortBy, setSortBy] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
   
   // Sample lead data
   const rawLeadsData: Lead[] = useMemo(() => [
@@ -224,14 +225,42 @@ export const useLeadsData = () => {
     'Closed': 1
   };
 
-  // Sorted data based on current sort selection
+  // Search function that looks across multiple fields
+  const searchLeads = (leads: Lead[], query: string): Lead[] => {
+    if (!query.trim()) return leads;
+    
+    const searchTerm = query.toLowerCase().trim();
+    
+    return leads.filter(lead => {
+      // Search across name, email, phone, website, status, and contact
+      const searchFields = [
+        lead.name,
+        lead.email,
+        lead.phone,
+        lead.website,
+        lead.status,
+        lead.contact,
+        lead.revenue
+      ];
+      
+      return searchFields.some(field => 
+        field?.toLowerCase().includes(searchTerm)
+      );
+    });
+  };
+
+  // Filter and sort data based on search and sort criteria
   const leadsData = useMemo(() => {
-    if (!sortBy) return rawLeadsData;
+    // First apply search filter
+    let filteredData = searchLeads(rawLeadsData, searchQuery);
+    
+    // Then apply sorting if needed
+    if (!sortBy) return filteredData;
 
     const [field, direction] = sortBy.split('-');
     const isAsc = direction === 'asc';
 
-    return [...rawLeadsData].sort((a, b) => {
+    return [...filteredData].sort((a, b) => {
       let aValue: any = a[field as keyof Lead];
       let bValue: any = b[field as keyof Lead];
 
@@ -261,7 +290,7 @@ export const useLeadsData = () => {
       }
       return 0;
     });
-  }, [rawLeadsData, sortBy]);
+  }, [rawLeadsData, searchQuery, sortBy]);
 
   // Function to handle sort changes
   const handleSortChange = (value: string) => {
@@ -273,13 +302,28 @@ export const useLeadsData = () => {
     setSortBy('');
   };
 
+  // Function to handle search changes
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+  };
+
+  // Function to clear search
+  const clearSearch = () => {
+    setSearchQuery('');
+  };
+
   return {
     leadsData,
     columns,
     sortOptions,
     viewOptions,
     currentSort: sortBy,
+    searchQuery,
+    totalLeads: rawLeadsData.length,
+    filteredCount: leadsData.length,
     handleSortChange,
-    clearSort
+    clearSort,
+    handleSearchChange,
+    clearSearch
   };
 };
