@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Global Colors */
+    --global-bg-1: #d5e7f2;
+    --global-bg-2: #f6f6f6;
+    --global-bg-3: #f8e6ba;
+    --global-bg-4: #f9f9f9;
+    --global-bg-5: #ffffff;
+    --global-text-1: #000000;
+    --global-text-2: #0000007f;
+    --global-text-3: #171a1f;
+    --global-text-4: #3f1e00;
+    --global-text-5: #818181;
+    --global-text-6: #81818199;
+    --global-text-7: #565d6d;
+
+    /* Sidebar Colors */
+    --sidebar-bg-1: #171a1f;
+    --sidebar-bg-2: #565d6d7f;
+    --sidebar-text-1: #565d6d;
+    --sidebar-text-2: #ffffff;
+
+    /* Header Colors */
+    --header-text-1: #1c1c1c33;
+
+    /* Table Colors */
+    --table-bg-1: #c7e1f9;
+    --table-bg-2: #dceadd;
+    --table-bg-3: #e8d5f2;
+    --table-bg-4: #fbded9;
+  }
+}
+
+@layer utilities {
+  /* Global */
+  .bg-global-1 {
+    background-color: var(--global-bg-1);
+  }
+  .bg-global-2 {
+    background-color: var(--global-bg-2);
+  }
+  .bg-global-3 {
+    background-color: var(--global-bg-3);
+  }
+  .bg-global-4 {
+    background-color: var(--global-bg-4);
+  }
+  .bg-global-5 {
+    background-color: var(--global-bg-5);
+  }
+  .text-global-1 {
+    color: var(--global-text-1);
+  }
+  .text-global-2 {
+    color: var(--global-text-2);
+  }
+  .text-global-3 {
+    color: var(--global-text-3);
+  }
+  .text-global-4 {
+    color: var(--global-text-4);
+  }
+  .text-global-5 {
+    color: var(--global-text-5);
+  }
+  .text-global-6 {
+    color: var(--global-text-6);
+  }
+  .text-global-7 {
+    color: var(--global-text-7);
+  }
+
+  /* Sidebar */
+  .bg-sidebar-1 {
+    background-color: var(--sidebar-bg-1);
+  }
+  .bg-sidebar-2 {
+    background-color: var(--sidebar-bg-2);
+  }
+  .text-sidebar-1 {
+    color: var(--sidebar-text-1);
+  }
+  .text-sidebar-2 {
+    color: var(--sidebar-text-2);
+  }
+
+  /* Header */
+  .text-header-1 {
+    color: var(--header-text-1);
+  }
+
+  /* Table */
+  .bg-table-1 {
+    background-color: var(--table-bg-1);
+  }
+  .bg-table-2 {
+    background-color: var(--table-bg-2);
+  }
+  .bg-table-3 {
+    background-color: var(--table-bg-3);
+  }
+  .bg-table-4 {
+    background-color: var(--table-bg-4);
+  }
+}
