@@ -1,12 +1,23 @@
-# Next.js with TypeScript and Tailwind CSS
+# CRM Dashboard - Lead Management System
 
-A modern Next.js 14 application built with TypeScript and Tailwind CSS.
+A modern, feature-rich CRM dashboard built with Next.js 14, TypeScript, and Tailwind CSS for efficient lead management and customer relationship tracking.
 
 ## 🚀 Features
 
-- **Next.js 14** - Latest version with improved performance and features
-- **React 18** - Latest React version with enhanced capabilities
+### Core CRM Functionality
+- **Lead Management** - Complete lead tracking and status management
+- **Kanban Board View** - Visual drag-and-drop lead pipeline
+- **Table View** - Traditional CRM table with sorting and filtering
+- **Real-time Search** - Multi-field search across all lead data
+- **Status Filtering** - Filter leads by Active, On Hold, Not Started, Closed
+- **Responsive Design** - Mobile-first responsive interface
+
+### Technical Features
+- **Next.js 14** - Latest version with App Router and improved performance
+- **React 18** - Modern React with hooks and state management
+- **TypeScript** - Full type safety and better developer experience
 - **Tailwind CSS** - Utility-first CSS framework for rapid UI development
+- **Drag & Drop** - HTML5 drag and drop API for kanban functionality
 
 ## 📋 Prerequisites
 
@@ -34,24 +45,42 @@ A modern Next.js 14 application built with TypeScript and Tailwind CSS.
 ## 📁 Project Structure
 
 ```
-nextjs-js-tailwind/
-├── public/             # Static assets
+crm/
+├── public/                           # Static assets and favicon
 ├── src/
-│   ├── app/            # App router components
-│   │   ├── layout.tsx  # Root layout component
-│   │   └── page.tsx    # Main page component
-│   ├── components/     # Reusable UI components
-│   ├── styles/         # Global styles and Tailwind configuration
-├── next.config.mjs     # Next.js configuration
-├── package.json        # Project dependencies and scripts
-├── postcss.config.js   # PostCSS configuration
-└── tailwind.config.js  # Tailwind CSS configuration
-
+│   ├── app/                         # App router pages
+│   │   ├── all-leads-dashboard/     # Main CRM dashboard page
+│   │   ├── layout.tsx               # Root layout component
+│   │   └── page.tsx                 # Landing page
+│   ├── components/                  # Reusable UI components
+│   │   ├── common/                  # Common components (Header, Sidebar)
+│   │   ├── features/                # Feature-specific components
+│   │   ├── layout/                  # Layout components
+│   │   └── ui/                      # Basic UI components
+│   ├── hooks/                       # Custom React hooks
+│   │   └── useLeadsData.ts          # Lead data management hook
+│   └── styles/                      # Global styles and Tailwind config
+├── next.config.mjs                  # Next.js configuration
+├── package.json                     # Project dependencies and scripts
+├── postcss.config.js                # PostCSS configuration
+└── tailwind.config.js               # Tailwind CSS configuration
 ```
 
-## 🧩 Page Editing
+## 🎯 CRM Features Overview
 
-You can start editing the page by modifying `src/app/page.tsx`. The page auto-updates as you edit the file.
+### Dashboard Views
+- **Table View**: Traditional CRM table with sortable columns
+- **Kanban View**: Visual pipeline with drag-and-drop functionality
+
+### Lead Management
+- Add, edit, and track lead information
+- Status management (Active, On Hold, Not Started, Closed)
+- Contact details and revenue tracking
+
+### Search & Filtering
+- Real-time search across all lead fields
+- Status-based filtering
+- Combined search and filter functionality
 
 ## 🎨 Styling
 
@@ -90,8 +119,8 @@ You can check out the [Next.js GitHub repository](https://github.com/vercel/next
 
 ## 🙏 Acknowledgments
 
-- Built with [Rocket.new](https://rocket.new)
 - Powered by Next.js and React
 - Styled with Tailwind CSS
+- Icons and components built with modern web standards
 
-Built with ❤️ on Rocket.new
+Built with ❤️ for efficient CRM management

@@ -7,11 +7,11 @@ export const viewport = {
 };
 
 export const metadata = {
-  title: 'Next.js with Tailwind CSS',
-  description: 'A boilerplate project with Next.js and Tailwind CSS',
+  title: 'CRM Dashboard - Lead Management System',
+  description: 'Modern CRM dashboard for lead management with kanban board, filtering, and search capabilities',
   icons: {
     icon: [
-      { url: '/favicon.ico', type: 'image/x-icon' }
+      { url: '/favicon.svg', type: 'image/svg+xml' }
     ],
   },
 };
@@ -24,8 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fpetrosap6741back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.5"></script>
-</body>
+      <body>{children}</body>
     </html>
   );
 }

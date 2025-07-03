@@ -1,7 +1,8 @@
 {
-  "name": "petro_s_application",
-  "version": "0.1.0",
+  "name": "crm-dashboard",
+  "version": "1.0.0",
   "private": true,
+  "description": "Modern CRM dashboard for lead management with kanban board and filtering",
   "scripts": {
     "dev": "next dev -p 4028",
     "build": "next build",
@@ -14,7 +15,6 @@
     "next": "14.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "@dhiwise/component-tagger": "^1.0.9",
     "@tailwindcss/typography": "^0.5.16",
     "recharts": "^2.15.2"
   },
